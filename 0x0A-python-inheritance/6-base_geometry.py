@@ -9,6 +9,6 @@ class BaseGeometry:
         """Area function.
 
         Raises:
-            Exception: if area isn't implemented.
+            Exception: if area is not implemented.
         """
-        raise Exception("area() isn't implemented")
+        raise Exception("area() is not implemented")
