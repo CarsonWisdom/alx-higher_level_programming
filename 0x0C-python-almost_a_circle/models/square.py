@@ -1,6 +1,21 @@
+#!/usr/bin/python3
+"""Defines class Square"""
+
+
+from inspect import classify_class_attrs
 from models.rectangle import Rectangle
 
+
 class Square(Rectangle):
+    """Class defining properties of Square.
+
+     Attributes:
+        width (int): width of rectangle.
+        height (int): height of rectangle.
+        x (int): x.
+        y (int): y.
+        id (int): identity of square.
+    """
     def __init__(self, size, x=0, y=0, id=None):
         """Creates new instances of Square
 
@@ -14,7 +29,8 @@ class Square(Rectangle):
 
     def __str__(self):
         """Prints square"""
-        return f"[Square] ({self.id}) {self.x}/{self.y} - {self.size}"
+        return ("[Square] ({}) {:d}/{:d} - {:d}".
+                format(self.id, self.x, self.y, self.size))
 
     @property
     def size(self):
@@ -34,29 +50,48 @@ class Square(Rectangle):
             TypeError: if width is not an integer.
             ValueError: if width is less than or equal to zero.
         """
-        super().__setattr__('width', value)
-        super().__setattr__('height', value)
+        if not isinstance(value, int):
+            raise TypeError("width must be an integer")
+        if value <= 0:
+            raise ValueError("width must be > 0")
+        
+        self.width = value
+        self.height = value
 
     def update(self, *args, **kwargs):
-        """Assigns an argument to each attribute.
+        """Assigns an argument to each attribute
 
         Args:
             *args (tuple): arguments.
             **kwargs (dict): double pointer to a dictionary.
         """
-        attributes = ['id', 'size', 'x', 'y']
-        for attr, value in zip(attributes, args):
-            setattr(self, attr, value)
-
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        if args is not None and len(args) is not 0:
+            list_atr = ['id', 'size', 'x', 'y']
+            for i in range(len(args)):
+                if list_atr[i] == 'size':
+                    setattr(self, 'width', args[i])
+                    setattr(self, 'height', args[i])
+                else:
+                    setattr(self, list_atr[i], args[i])
+        else:
+            for key, value in kwargs.items():
+                if key == 'size':
+                    setattr(self, 'width', value)
+                    setattr(self, 'height', value)
+                else:
+                    setattr(self, key, value)
 
     def to_dictionary(self):
-        """Returns the dictionary representation of a Square.
+        """Returns dictionary representation of a Square.
 
         Returns:
             dict: square.
         """
-        square_dict = super().to_dictionary()
-        square_dict['size'] = square_dict.pop('width')  # Rename key 'width' to 'size'
-        return square_dict
+        dict1 = self.__dict__
+        dict2 = {}
+        dict2['id'] = dict1['id']
+        dict2['size'] = dict1['_Rectangle__width']
+        dict2['x'] = dict1['_Rectangle__x']
+        dict2['y'] = dict1['_Rectangle__y']
+
+        return dict2
