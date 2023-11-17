@@ -1,8 +1,13 @@
-import json
-import unittest
+#!/usr/bin/python3
+"""Defines a class TestSquareMethods"""
+
+
 from unittest.mock import patch
+import unittest
+import json
 from io import StringIO
 from models.base import Base
+from models.rectangle import Rectangle
 from models.square import Square
 
 
@@ -33,7 +38,7 @@ class TestSquareMethods(unittest.TestCase):
         self.assertEqual(s2.id, 4)
 
     def test_attributes_1(self):
-        """ Test for width, x, and y types"""
+        """ Test for width and x and y types"""
         with self.assertRaisesRegex(TypeError, "width must be an integer"):
             Square("1")
         with self.assertRaisesRegex(TypeError, "x must be an integer"):
@@ -42,7 +47,7 @@ class TestSquareMethods(unittest.TestCase):
             Square(1, 2, "3")
 
     def test_attributes_2(self):
-        """ Test for width, height, and y ranges"""
+        """ Test for width and height ranges"""
         with self.assertRaisesRegex(ValueError, "width must be > 0"):
             Square(-1)
             Square(0)
@@ -62,14 +67,14 @@ class TestSquareMethods(unittest.TestCase):
         """ Tests constructor with many arguments """
         with self.assertRaises(TypeError) as e:
             r = Square(1, 2, 3, 4, 5)
-        s = "__init__() takes from 2 to 5 positional arguments but 6 were given"
+        s = "__init__() takes from 2 to 5 positional arguments but 6 \
+were given"
         self.assertEqual(str(e.exception), s)
 
     def test_is_Rectangle_instance(self):
         """ Test Square is a Rectangle instance """
         s1 = Square(1)
-        self.assertIsInstance(s1, Square)
-        self.assertIsInstance(s1, Base)
+        self.assertEqual(True, isinstance(s1, Rectangle))
 
     def test_area(self):
         """ Test area method """
